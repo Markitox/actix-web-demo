@@ -1,6 +1,6 @@
 use actix_web::{ web, App, HttpServer };
 
-use crate::hello_world_controller::{hello, echo, manual_hello};
+use crate::hello_world_controller::{hello, echo, hello_world, manual_hello};
 
 mod hello_world_controller;
 mod user_controller;
@@ -22,6 +22,7 @@ async fn main() -> std::io::Result<()> {
             )
             .service(hello)
             .service(echo)
+            .service(hello_world)
             .route("/hey", web::get().to(manual_hello))
         })
     .bind("0.0.0.0:8080").unwrap()
