@@ -1,6 +1,5 @@
-use actix_web::{ web, error, get, post, Error, HttpRequest, HttpResponse, Responder };
+use actix_web::{ web, get, post, Responder, Result };
 use serde::{ Serialize, Deserialize };
-use futures::future::{ ready, Ready };
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Computer {
@@ -9,44 +8,21 @@ struct Computer {
     brand: String,
 }
 
-impl Responder for Computer {
-    type Error = Error;
-    type Future = Ready<Result<HttpResponse, Error>>;
 
-    fn respond_to(self, _request: &HttpRequest) -> Self::Future {
-        let body = serde_json::to_string(&self).unwrap();
-
-        ready(Ok(HttpResponse::Ok()
-            .content_type("application/json")
-            .body(body)))
-    }
-}
-
-pub fn route_config(cfg: &mut web::ServiceConfig) {
-    let json_config = web::JsonConfig::default()
-        .limit(4096)
-        .error_handler(|err, _req| {
-            error::InternalError::from_response(err,
-                HttpResponse::Conflict().finish()).into()
-        });
-
-    cfg.app_data(json_config)
-        .service(index)
-        .service(save);
-}
-
-#[get("/")]
-async fn index() -> impl Responder {
-    Computer { 
+#[get("/computer")]
+pub async fn index() -> Result<impl Responder> {
+    let computer = Computer { 
         id: 1001, 
         model: "MacBook Pro 15-inch 2018".to_string(),
         brand: "Apple".to_string(),
-    }
+    };
+
+    Ok(web::Json(computer))
 }
 
-#[post("/")]
-async fn save(computer: web::Json<Computer>) -> impl Responder {
+#[post("/computer")]
+pub async fn save(computer: web::Json<Computer>) -> Result<impl Responder> {
     println!("{:?}", &computer);
 
-    computer
+    Ok(web::Json(computer))
 }

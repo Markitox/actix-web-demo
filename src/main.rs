@@ -1,6 +1,7 @@
 use actix_web::{ web, App, HttpServer };
 
 use crate::hello_world_controller::{hello, echo, hello_world, manual_hello};
+use crate::computer_controller::{index, save};
 
 mod hello_world_controller;
 mod user_controller;
@@ -16,10 +17,8 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/user")
                     .configure(user_controller::route_config)
             )
-            .service(
-                web::scope("/computer")
-                    .configure(computer_controller::route_config)
-            )
+            .service(index)
+            .service(save)
             .service(hello)
             .service(echo)
             .service(hello_world)
