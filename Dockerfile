@@ -1,4 +1,4 @@
-FROM rust:1.88.0-alpine AS BUILD_LAYER
+FROM rust:1.88.0-alpine AS build_layer
 
 RUN apk update && apk add ca-certificates musl-dev && apk cache clean
 RUN rustup target add x86_64-unknown-linux-musl
@@ -15,8 +15,8 @@ RUN cargo build --release
 FROM scratch
 WORKDIR /opt/rusty
 
-COPY --from=BUILD_LAYER /opt/rusty/target/release/actix-web-demo .
-COPY --from=BUILD_LAYER /etc/passwd /etc/passwd
+COPY --from=build_layer /opt/rusty/target/release/actix-web-demo .
+COPY --from=build_layer /etc/passwd /etc/passwd
 USER appuser
 
 EXPOSE 8080
