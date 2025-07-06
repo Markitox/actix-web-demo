@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.13
+  
+  pre_build:
+    commands:
+      - printenv
+
+  build:
+    commands:
+      - docker build -t actix-web-demo .
+
+  post_build:
+    commands:
+      - docker images
