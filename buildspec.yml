@@ -8,11 +8,17 @@ phases:
   pre_build:
     commands:
       - printenv
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
     commands:
-      - docker build -t actix-web-demo .
-
+      - |
+        IMAGE_TAG=develop-$CODEBUILD_RESOLVED_SOURCE_VERSION;
+        SERVICE_NAME=actix-web-demo
+      - docker build -t $SERVICE_NAME:$IMAGE_TAG .
+      - docker tag $SERVICE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - docker images
+      - docker push $SERVICE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
