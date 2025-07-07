@@ -2,6 +2,7 @@ version: 0.2
 env:
   secrets-manager:
       DOCKER_CREDENTIALS: "shared/docker/credentials"
+      DOCKER_USERNAME: "shared/docker/credentials:username"
 
 phases:
   install:
