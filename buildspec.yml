@@ -1,8 +1,4 @@
 version: 0.2
-env:
-  secrets-manager:
-      DOCKER_USERNAME: "shared/docker/credentials:username"
-      DOCKER_PASSWORD: "shared/docker/credentials:password"
 
 phases:
   install:
@@ -12,8 +8,6 @@ phases:
   pre_build:
     commands:
       - printenv
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
     commands:
