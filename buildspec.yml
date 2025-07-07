@@ -1,4 +1,7 @@
 version: 0.2
+env:
+  secrets-manager:
+      DOCKER_CREDENTIALS: "shared/docker/credentials"
 
 phases:
   install:
@@ -16,9 +19,10 @@ phases:
       - |
         IMAGE_TAG=develop-$CODEBUILD_RESOLVED_SOURCE_VERSION;
         SERVICE_NAME=actix-web-demo
-      - docker build -t $SERVICE_NAME:$IMAGE_TAG .
-      - docker tag $SERVICE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+      # - docker build -t $SERVICE_NAME:$IMAGE_TAG .
+      # - docker tag $SERVICE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
-      - docker images
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo 'BYE'
+      # - docker images
+      # - docker push $REPOSITORY_URI:$IMAGE_TAG
