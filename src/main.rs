@@ -2,10 +2,13 @@ use actix_web::{ web, App, HttpServer };
 
 use crate::hello_world_controller::{hello, echo, hello_world, manual_hello};
 use crate::computer_controller::{index, save};
+use crate::health_check::admin_health_check;
+
 
 mod hello_world_controller;
 mod user_controller;
 mod computer_controller;
+mod health_check;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -22,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(echo)
             .service(hello_world)
+            .service(admin_health_check)
             .route("/hey", web::get().to(manual_hello))
         })
     .bind("0.0.0.0:8080").unwrap()
