@@ -13,7 +13,13 @@ phases:
   build:
     commands:
       - |
-        IMAGE_TAG=develop-$CODEBUILD_RESOLVED_SOURCE_VERSION;
+        BRACH_NAME='main'
+        if [ ! -z "$CODEBUILD_SOURCE_VERSION" ]; then
+         BRANCH_NAME="$CODEBUILD_SOURCE_VERSION"
+        fi
+
+
+        IMAGE_TAG=develop-$BRANCH_NAME-$CODEBUILD_RESOLVED_SOURCE_VERSION;
         SERVICE_NAME=actix-web-demo
       - docker build -t $SERVICE_NAME:$IMAGE_TAG .
       - docker tag $SERVICE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
