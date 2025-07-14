@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       - |
-        BRACH_NAME='main'
+        BRANCH_NAME='main'
         if [ ! -z "$CODEBUILD_SOURCE_VERSION" ]; then
          BRANCH_NAME="$CODEBUILD_SOURCE_VERSION"
         fi
