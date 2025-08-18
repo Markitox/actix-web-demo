@@ -2,7 +2,6 @@ use actix_web::{get, Responder, HttpResponse, web, Result};
 use std::env;
 use std::collections::HashMap;
 
-
 #[get("/admin/health")]
 pub async fn admin_health_check() -> impl Responder {
 
