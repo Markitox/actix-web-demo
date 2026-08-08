@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/rust:1.88-alpine AS build_layer
+FROM public.ecr.aws/docker/library/rust:1.89-alpine AS build_layer
 
 RUN apk update && apk add ca-certificates musl-dev && apk cache clean
 RUN rustup target add x86_64-unknown-linux-musl
